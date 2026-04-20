@@ -1,0 +1,252 @@
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+	background-color: #FFC6CA;
+    
+}
+
+
+.sidebar {
+    width: 235px;
+    background-color:#FFB0B5;
+    color: black;
+    height: 100vh;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+}
+
+.sidebar nav a {
+    display: block;
+    color: black;
+    text-decoration: none;
+    padding: 15px;
+    font-weight: bold;
+	font-size: 18px;
+	transition: 0.3s;
+}
+
+.sidebar nav a:hover {
+    background: white;
+    padding-left: 25px;
+}
+
+.sidebar nav a.active {
+    background: white;
+    color: black;
+    padding-left: 10px;
+}
+
+
+.content {
+    margin-left: 235px;
+    padding: 20px;
+    width: calc(100% - 235px);
+}
+
+.hero img {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+}
+
+
+.abt-img, .map, .reg-img {
+    width: 800px;
+    margin: 10px 0;
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+form input, form textarea, form button {
+    margin-bottom: 12px;
+    padding: 8px;
+}
+
+
+table {
+    width: 100%;
+   max-width: 700px;
+	border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid gray;
+}
+
+th, td {
+    padding: 10px;
+}
+
+
+footer {
+   
+   margin-left: 235px;
+    padding: 40px 20px;
+    
+    color: white;
+    margin-left: 230px;
+}
+
+.footer-right a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.footer-right a:hover {
+    opacity: 0.7;
+}
+
+
+@media(max-width: 600px) {
+    .sidebar {
+        width: 100px;
+    }
+    .content, footer {
+        margin-left: 160px;
+    }
+}
+
+.btn-register {
+            padding: 10px 20px;
+            background-color: #ff6f91;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            align-self: center;
+        }
+
+        .btn-register:hover {
+            background-color: #ff4f70;
+        }
+
+.content form {
+            display: flex;
+            flex-direction: column;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        .content form input,
+        .content form select {
+            
+            padding: 8px;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+
+form input, form textarea{
+  	align-self: flex-start;
+}
+
+
+.contact-page form {
+    max-width: 600px;
+}
+
+.contact-page form input,
+.contact-page form textarea {
+    width: 100%;
+    max-width: 600px;
+}
+
+.contact-page form button {
+    width: 120px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.contact-page table {
+    width: 100%;
+    max-width: 700px;
+    border-collapse: collapse;
+}
+
+.mode-btn {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    background: black;
+    color: pink;
+}
+
+body.dark-mode {
+    background-color: #121212; /* very dark gray */
+    color: #FFB0B5; /* soft pink */
+}
+
+body.dark-mode .sidebar {
+    background-color: #1e1e1e; /* dark gray */
+    color: #FFB0B5; /* soft pink */
+}
+
+body.dark-mode .sidebar nav a {
+    color: #FFB0B5; /* soft pink */
+}
+
+body.dark-mode .sidebar nav a.active {
+    background: #FFB0B5; /* light pink */
+    color: #121212; /* dark text */
+}
+
+body.dark-mode .content {
+    background-color: #121212; /* dark bg */
+    color: #FFB0B5; /* soft pink */
+}
+
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+    background-color: #222; /* dark gray */
+    color: #FFB0B5; /* soft pink */
+    border: 1px solid #FFB0B5;
+}
+
+body.dark-mode table,
+body.dark-mode th,
+body.dark-mode td {
+    border: 1px solid #FFB0B5;
+}
+
+body.dark-mode footer {
+    background-color: #1e1e1e;
+    color: #FFB0B5;
+}
+
+.mode-btn {
+    background: #1e1e1e; /* dark gray button bg */
+    color: #FFB0B5; /* soft pink text */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
