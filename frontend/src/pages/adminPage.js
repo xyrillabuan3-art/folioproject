@@ -25,29 +25,30 @@ const AdminPage = () => {
   }, []);
 
   if (loading) {
-    return <h2>Loading Admin Dashboard...</h2>;
+    return <div style={{ padding: '20px' }}>Loading Admin Dashboard...</div>;
   }
 
   if (!user) {
-    return <h2>Please login first</h2>;
+    return <div style={{ padding: '20px' }}>Please login first</div>;
   }
 
   if (user.role !== 'admin') {
-    return <h2>Access Denied. Admin only. Your role is: {user.role}</h2>;
+    return <div style={{ padding: '20px' }}>Access Denied. Your role is: {user.role}</div>;
   }
 
   return (
-    <div>
+    <div style={{ padding: '20px' }}>
       <h1>Admin Dashboard</h1>
+      <p>Welcome, {user.name}!</p>
       
-      <h2>Users List ({users.length})</h2>
+      <h2>Users ({users.length})</h2>
       <ul>
         {users.map(u => (
           <li key={u._id}>{u.name} - {u.email} - Role: {u.role}</li>
         ))}
       </ul>
 
-      <h2>Posts List ({posts.length})</h2>
+      <h2>Posts ({posts.length})</h2>
       <ul>
         {posts.map(p => (
           <li key={p._id}>{p.title} - by {p.author?.name || 'Unknown'}</li>
