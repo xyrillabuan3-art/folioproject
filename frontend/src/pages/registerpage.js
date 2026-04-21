@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import API from '../api/axios';
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
-    name: "",
+    email: "",
     birth: "",
     password: "",
     confirmPassword: "",
@@ -13,6 +14,9 @@ export default function RegisterPage() {
 
   const [errors, setErrors] = useState({});
   const [darkMode, setDarkMode] = useState(false);
+  const [serverError, setServerError] = useState("");
+  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const mode = localStorage.getItem("theme");
@@ -43,11 +47,13 @@ export default function RegisterPage() {
     setForm({ ...form, gender: e.target.value });
   };
 
-  const validateForm = (e) => {
+  const validateForm = async (e) => {
     e.preventDefault();
+    setServerError("");
+    setSuccess("");
     let newErrors = {};
 
-    if (form.name === "") newErrors.name = "Name required";
+    if (form.email === "") newErrors.email = "Email required";
     if (form.birth === "") newErrors.birth = "Birth required";
     if (form.password.length < 8) newErrors.password = "Min 8 characters";
     if (form.password !== form.confirmPassword) newErrors.confirmPassword = "Password not match";
@@ -55,8 +61,24 @@ export default function RegisterPage() {
     if (form.accountType === "") newErrors.accountType = "Select account";
 
     setErrors(newErrors);
+    
     if (Object.keys(newErrors).length === 0) {
-      alert("Registration Successful!");
+      try {
+        // Send to backend
+        const response = await API.post('/auth/register', {
+          name: form.email.split('@')[0], // Use email prefix as name
+          email: form.email,
+          password: form.password,
+          role: form.accountType === 'admin' ? 'admin' : 'member'
+        });
+        
+        setSuccess("Registration successful! Redirecting to login...");
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000);
+      } catch (err) {
+        setServerError(err.response?.data?.message || "Registration failed. Please try again.");
+      }
     }
   };
 
@@ -71,7 +93,7 @@ export default function RegisterPage() {
 
         .main {
           display: flex;
-          justify-content: center; /* Pinaka-importante: Pinapagitna ang content */
+          justify-content: center;
           align-items: flex-start;
           padding: 50px 20px;
           min-height: 80vh;
@@ -84,12 +106,12 @@ export default function RegisterPage() {
           box-shadow: 0 4px 15px rgba(0,0,0,0.1);
           max-width: 500px;
           width: 100%;
-          text-align: center; /* Pinapagitna ang text sa loob */
+          text-align: center;
         }
 
         .form-group {
           margin-bottom: 15px;
-          text-align: left; /* Para ang labels ay nasa kaliwa pa rin ng input */
+          text-align: left;
         }
 
         .form-group label {
@@ -99,6 +121,7 @@ export default function RegisterPage() {
           color: #333;
         }
 
+        .form-group input[type="email"],
         .form-group input[type="text"],
         .form-group input[type="password"],
         .form-group input[type="date"],
@@ -107,7 +130,7 @@ export default function RegisterPage() {
           padding: 10px;
           border: 1px solid #ccc;
           border-radius: 5px;
-          box-sizing: border-box; /* Para hindi lumampas ang width */
+          box-sizing: border-box;
         }
 
         .radio-group {
@@ -119,6 +142,22 @@ export default function RegisterPage() {
           font-size: 12px;
           display: block;
           margin-top: 5px;
+        }
+
+        .success {
+          color: green;
+          font-size: 14px;
+          display: block;
+          margin-top: 5px;
+          margin-bottom: 10px;
+        }
+
+        .server-error {
+          color: red;
+          font-size: 14px;
+          display: block;
+          margin-top: 5px;
+          margin-bottom: 10px;
         }
 
         .btn-register {
@@ -164,11 +203,14 @@ export default function RegisterPage() {
           <h2>Registration Form</h2>
           <p>For updates in K-Drama</p>
 
+          {serverError && <div className="server-error">{serverError}</div>}
+          {success && <div className="success">{success}</div>}
+
           <form onSubmit={validateForm}>
             <div className="form-group">
-              <label>Name:</label>
-              <input type="text" name="name" value={form.name} onChange={handleChange} />
-              {errors.name && <span className="error">{errors.name}</span>}
+              <label>Email Address:</label>
+              <input type="email" name="email" placeholder="Email address" value={form.email} onChange={handleChange} />
+              {errors.email && <span className="error">{errors.email}</span>}
             </div>
 
             <div className="form-group">
