@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Comfort from "../assets/scene.webp";
 
 
-function AboutPage(){
+function About(){
 
 const [darkMode,setDarkMode] = useState(false);
 
@@ -141,4 +141,4 @@ Instagram
 
 }
 
-export default AboutPage;
+export default About;

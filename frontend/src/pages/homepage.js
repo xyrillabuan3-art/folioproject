@@ -4,10 +4,13 @@ import Contact from "../pages/contactpage";
 import Register from "../pages/registerpage";
 import About from "../pages/aboutpages";
 import GamePage from "./gamepage";
+import API from '../api/axios';
+import { Link } from 'react-router-dom';
 
-export default function Home() {
+export default function HomePage() {
   const [darkMode, setDarkMode] = useState(false);
   const [page, setPage] = useState("Home");
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const saved = localStorage.getItem("theme");
@@ -17,6 +20,20 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode]);
+
+  useEffect(() => {
+    if (page === "Home") {
+      const fetchPosts = async () => {
+        try {
+          const { data } = await API.get('/posts');
+          setPosts(data);
+        } catch (err) {
+          console.error('Failed to fetch posts');
+        }
+      };
+      fetchPosts();
+    }
+  }, [page]);
 
   return (
     <div
@@ -77,25 +94,15 @@ export default function Home() {
       <div style={{ flex: 1, padding: "20px" }}>
         {page === "Home" && (
           <>
-            <img
-              src={poster}
-              alt="Poster"
-              style={{ width: "100%", borderRadius: "10px" }}
-            />
-            <h1>K-Drama World</h1>
-            <p>
-              Dive into Korean Drama culture filled with emotion, comedy, and
-              heart. K-Dramas are famous for their engaging stories and
-              relatable characters.
-            </p>
-            <h2>Why I love K-Drama?</h2>
-            <ul>
-              <li>Unique storytelling</li>
-              <li>High quality cinematography</li>
-              <li>Beautiful OST songs</li>
-              <li>Life lessons</li>
-            </ul>
-            <p>Watching K-drama helps me relax and feel inspired after studying.</p>
+            <h1>Latest Posts</h1>
+            {posts.map(post => (
+              <div key={post._id} style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px' }}>
+                <h2><Link to={`/posts/${post._id}`}>{post.title}</Link></h2>
+                <p>By {post.author.name}</p>
+                {post.image && <img src={`http://localhost:5000/uploads/${post.image}`} alt='Cover' style={{ maxWidth: '200px' }} />}
+                <p>{post.body.substring(0, 100)}...</p>
+              </div>
+            ))}
           </>
         )}
 
@@ -107,7 +114,7 @@ export default function Home() {
 
           {page === "About" && <About />}
 
-          {page === "Game" && <GamePage />} 
+          {page === "Games" && <GamePage />} 
 
         
        

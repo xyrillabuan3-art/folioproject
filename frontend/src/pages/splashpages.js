@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Splash() {
+export default function SplashPage() {
   const [dots, setDots] = useState("");
   const [fadeOut, setFadeOut] = useState(false);
   const navigate = useNavigate();

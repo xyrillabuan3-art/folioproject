@@ -13,7 +13,7 @@ const quizData = [
   { q: "What K-Drama is about a soldier and a doctor?", a: "Vincenzo", b: "Itaewon Class", c: "Crash Landing on You", correct: "c" }
 ];
 
-export default function GamesPage() {
+export default function GamePage() {
   const [darkMode, setDarkMode] = useState(false);
   
   // 2 Pics 1 Word State
