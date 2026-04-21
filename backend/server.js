@@ -13,9 +13,12 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'https://thefolio-frontend-six.vercel.app'
+    'https://folioproject-obt6.vercel.app',
+    'https://folioproject-obt6-git-main-xyrillabuan3-arts-projects.vercel.app'
   ],
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
