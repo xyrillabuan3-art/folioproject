@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import SplashPage from './pages/splashpages';
@@ -15,22 +16,24 @@ import AdminPage from './pages/adminPage';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path='/' element={<SplashPage />} />
-        <Route path='/home' element={<HomePage />} />
-        <Route path='/about' element={<AboutPage />} />
-        <Route path='/contact' element={<ContactPage />} />
-        <Route path='/register' element={<RegisterPage />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/game' element={<GamePage />} />
-        <Route path='/posts/:id' element={<PostPage />} />
-        <Route path='/create-post' element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
-        <Route path='/posts/:id/edit' element={<ProtectedRoute><EditPostPage /></ProtectedRoute>} />
-        <Route path='/admin' element={<ProtectedRoute role='admin'><AdminPage /></ProtectedRoute>} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path='/' element={<SplashPage />} />
+          <Route path='/home' element={<HomePage />} />
+          <Route path='/about' element={<AboutPage />} />
+          <Route path='/contact' element={<ContactPage />} />
+          <Route path='/register' element={<RegisterPage />} />
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/game' element={<GamePage />} />
+          <Route path='/posts/:id' element={<PostPage />} />
+          <Route path='/create-post' element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
+          <Route path='/edit-post/:id' element={<ProtectedRoute><EditPostPage /></ProtectedRoute>} />
+          <Route path='/admin' element={<ProtectedRoute role='admin'><AdminPage /></ProtectedRoute>} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
