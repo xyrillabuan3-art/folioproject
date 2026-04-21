@@ -1,23 +1,19 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
 import SplashPage from './pages/splashpages';
 import HomePage from './pages/homepage';
-import AboutPage from './pages/aboutpages';
-import ContactPage from './pages/contactpage';
-import RegisterPage from './pages/registerpage';
-import GamePage from './pages/gamepage';
 import LoginPage from './pages/loginpage';
+import RegisterPage from './pages/registerpage';
 
 function App() {
   return (
     <BrowserRouter>
+      <Navbar />
       <Routes>
-        <Route path='/' element={<SplashPage />} />
-        <Route path='/home' element={<HomePage />} />
-        <Route path='/about' element={<AboutPage />} />
-        <Route path='/contact' element={<ContactPage />} />
-        <Route path='/register' element={<RegisterPage />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/game' element={<GamePage />} />
+        <Route path="/" element={<SplashPage />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Routes>
     </BrowserRouter>
   );
