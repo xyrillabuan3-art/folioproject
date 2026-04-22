@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-// Direct MongoDB connection string
+// Use your actual MongoDB connection string
 const MONGO_URI = 'mongodb+srv://thefoliouser:TheFolio1234@thefolio.dtbfigo.mongodb.net/thefolio?retryWrites=true&w=majority';
 
 const userSchema = new mongoose.Schema({
@@ -22,9 +22,9 @@ const createAdmin = async () => {
     const existingAdmin = await User.findOne({ email: adminEmail });
     
     if (existingAdmin) {
-      console.log('Admin already exists');
-      console.log('Email: admin@thefolio.com');
-      console.log('Password: Admin1234');
+      console.log('Admin account already exists.');
+      console.log('Email: adminn@thefolioy.com');
+      console.log('Password: Admin123456');
       process.exit();
     }
     
@@ -38,8 +38,8 @@ const createAdmin = async () => {
     });
     
     await admin.save();
-    console.log('Admin created successfully!');
-    console.log('Email: admin@thefolio.com');
+    console.log('Admin account created successfully!');
+    console.log('Email: thefolioadmin@gmail.com');
     console.log('Password: Admin1234');
     
     process.exit();
