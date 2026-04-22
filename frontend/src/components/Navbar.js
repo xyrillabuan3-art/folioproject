@@ -5,69 +5,34 @@ function Navbar() {
   const location = useLocation();
   const { user, logout } = useAuth();
 
-  const links = [
-    { path: '/home', label: 'Home' },
-    { path: '/about', label: 'About' },
-    { path: '/contact', label: 'Contact' },
-  ];
-
   return (
     <nav className='navbar'>
       <Link to='/' className='logo'>MyBlog</Link>
       <ul>
-        {links.map(link => (
-          <li key={link.path}>
-            <Link
-              to={link.path}
-              className={location.pathname === link.path ? 'active' : ''}
-            >
-              {link.label}
-            </Link>
-          </li>
-        ))}
+        <li><Link to='/home' className={location.pathname === '/home' ? 'active' : ''}>Home</Link></li>
+        <li><Link to='/about' className={location.pathname === '/about' ? 'active' : ''}>About</Link></li>
+        <li><Link to='/contact' className={location.pathname === '/contact' ? 'active' : ''}>Contact</Link></li>
+        
         {!user && (
           <>
-            <li>
-              <Link to='/login' className={location.pathname === '/login' ? 'active' : ''}>
-                Login
-              </Link>
-            </li>
-            <li>
-              <Link to='/register' className={location.pathname === '/register' ? 'active' : ''}>
-                Register
-              </Link>
-            </li>
+            <li><Link to='/login' className={location.pathname === '/login' ? 'active' : ''}>Login</Link></li>
+            <li><Link to='/register' className={location.pathname === '/register' ? 'active' : ''}>Register</Link></li>
           </>
         )}
+        
         {user && (
           <>
-            <li>
-              <Link to='/create-post' className={location.pathname === '/create-post' ? 'active' : ''}>
-                Create Post
-              </Link>
-            </li>
-            <li>
-              <Link to='/profile' className={location.pathname === '/profile' ? 'active' : ''}>
-                Profile
-              </Link>
-            </li>
-            {/* ITO ANG IDINAGDAG NA ADMIN LINK - LALABAS LANG KUNG ADMIN ANG USER */}
+            <li><Link to='/create-post' className={location.pathname === '/create-post' ? 'active' : ''}>Create Post</Link></li>
+            <li><Link to='/profile' className={location.pathname === '/profile' ? 'active' : ''}>Profile</Link></li>
             {user.role === 'admin' && (
-              <li>
-                <Link to='/admin' className={location.pathname === '/admin' ? 'active' : ''}>
-                  Admin
-                </Link>
-              </li>
+              <li><Link to='/admin' className={location.pathname === '/admin' ? 'active' : ''}>Admin</Link></li>
             )}
-            <li>
-              <button type='button' className='nav-logout' onClick={logout}>
-                Logout
-              </button>
-            </li>
+            <li><button onClick={logout} className='nav-logout'>Logout</button></li>
           </>
         )}
       </ul>
     </nav>
   );
 }
+
 export default Navbar;
