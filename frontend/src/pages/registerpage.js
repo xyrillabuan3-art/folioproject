@@ -66,15 +66,17 @@ export default function RegisterPage() {
       try {
         // Send to backend
         const response = await API.post('/auth/register', {
-          name: form.email.split('@')[0], // Use email prefix as name
+          name: form.email.split('@')[0],
           email: form.email,
           password: form.password,
           role: form.accountType === 'admin' ? 'admin' : 'member'
         });
         
         setSuccess("Registration successful! Redirecting to login...");
+        
+        // FIXED: Use window.location.href instead of navigate for hard redirect
         setTimeout(() => {
-          navigate('/login');
+          window.location.href = '/login';
         }, 2000);
       } catch (err) {
         setServerError(err.response?.data?.message || "Registration failed. Please try again.");
