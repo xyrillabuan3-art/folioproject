@@ -51,6 +51,14 @@ function Navbar() {
                 Profile
               </Link>
             </li>
+            {/* ITO ANG IDINAGDAG NA ADMIN LINK - LALABAS LANG KUNG ADMIN ANG USER */}
+            {user.role === 'admin' && (
+              <li>
+                <Link to='/admin' className={location.pathname === '/admin' ? 'active' : ''}>
+                  Admin
+                </Link>
+              </li>
+            )}
             <li>
               <button type='button' className='nav-logout' onClick={logout}>
                 Logout
