@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import axios from '../api/axios';
+import { Link } from 'react-router-dom';
+import API from '../api/axios';
 
-function LoginPage() {
+export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError('');
-  
-  try {
-    const response = await API.post('/auth/login', { email, password });
-    localStorage.setItem('token', response.data.token);
-    localStorage.setItem('user', JSON.stringify(response.data.user));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
     
-    // Hard redirect para mag-reload ang Navbar
-    window.location.href = '/home';
-  } catch (err) {
-    setError(err.response?.data?.message || 'Login failed');
-  }
-};
+    try {
+      const response = await API.post('/auth/login', { email, password });
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      
+      // HARD REDIRECT - ito ang magpapa-reload ng buong page
+      window.location.href = '/home';
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed');
+    }
+  };
+
   return (
     <div style={{ padding: '20px', maxWidth: '400px', margin: '0 auto' }}>
       <h2>Login</h2>
@@ -48,7 +48,7 @@ function LoginPage() {
             style={{ width: '100%', padding: '8px', margin: '8px 0' }}
           />
         </div>
-        <button type="submit" style={{ padding: '10px 20px', marginTop: '10px' }}>
+        <button type="submit" style={{ padding: '10px 20px', marginTop: '10px', backgroundColor: '#ff69b4', color: 'white', border: 'none', cursor: 'pointer' }}>
           Login
         </button>
       </form>
@@ -58,5 +58,3 @@ function LoginPage() {
     </div>
   );
 }
-
-export default LoginPage;

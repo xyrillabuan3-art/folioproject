@@ -3,9 +3,8 @@ import { useAuth } from '../context/AuthContext';
 
 function Navbar() {
   const location = useLocation();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
-  // FIXED: Hard refresh logout function
   const handleLogout = () => {
     localStorage.clear();
     window.location.href = '/login';
