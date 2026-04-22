@@ -5,6 +5,12 @@ function Navbar() {
   const location = useLocation();
   const { user, logout } = useAuth();
 
+  // FIXED: Hard refresh logout function
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = '/login';
+  };
+
   return (
     <nav className='navbar'>
       <Link to='/' className='logo'>MyBlog</Link>
@@ -27,7 +33,7 @@ function Navbar() {
             {user.role === 'admin' && (
               <li><Link to='/admin' className={location.pathname === '/admin' ? 'active' : ''}>Admin</Link></li>
             )}
-            <li><button onClick={logout} className='nav-logout'>Logout</button></li>
+            <li><button onClick={handleLogout} className='nav-logout'>Logout</button></li>
           </>
         )}
       </ul>
