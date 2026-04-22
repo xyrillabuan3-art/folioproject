@@ -13,6 +13,7 @@ import PostPage from './pages/PostPage';
 import CreatePostPage from './pages/createPostPage';
 import EditPostPage from './pages/EditPostPage';
 import AdminPage from './pages/adminPage';
+import ProfilePage from './pages/profilepage';  // <-- IDAGDAG ITO
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path='/create-post' element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
           <Route path='/edit-post/:id' element={<ProtectedRoute><EditPostPage /></ProtectedRoute>} />
           <Route path='/admin' element={<ProtectedRoute role='admin'><AdminPage /></ProtectedRoute>} />
+          <Route path='/profile' element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />  {/* <-- IDAGDAG ITO */}
         </Routes>
       </BrowserRouter>
     </AuthProvider>
