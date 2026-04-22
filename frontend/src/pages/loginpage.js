@@ -8,20 +8,21 @@ function LoginPage() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
+  
+  try {
+    const response = await API.post('/auth/login', { email, password });
+    localStorage.setItem('token', response.data.token);
+    localStorage.setItem('user', JSON.stringify(response.data.user));
     
-    try {
-      const response = await axios.post('/auth/login', { email, password });
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-      navigate('/home');
-    } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
-    }
-  };
-
+    // Hard redirect para mag-reload ang Navbar
+    window.location.href = '/home';
+  } catch (err) {
+    setError(err.response?.data?.message || 'Login failed');
+  }
+};
   return (
     <div style={{ padding: '20px', maxWidth: '400px', margin: '0 auto' }}>
       <h2>Login</h2>
