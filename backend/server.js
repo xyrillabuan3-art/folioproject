@@ -52,10 +52,9 @@ mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ MongoDB Connected'))
   .catch(err => console.error('❌ MongoDB Error:', err));
 
-// ========== GET CURRENT USER ROUTE (ADDED THIS) ==========
+// ========== GET CURRENT USER ROUTE ==========
 app.get('/api/auth/me', async (req, res) => {
   try {
-    // Get the token from the Authorization header
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({ message: 'No token provided' });
@@ -77,7 +76,7 @@ app.get('/api/auth/me', async (req, res) => {
   }
 });
 
-// ========== ADMIN ROUTES (NO AUTH FOR TESTING) ==========
+// ========== ADMIN ROUTES ==========
 app.get('/api/admin/users', async (req, res) => {
   try {
     const users = await User.find({}).select('-password');
@@ -92,6 +91,37 @@ app.get('/api/admin/posts', async (req, res) => {
     const posts = await Post.find({}).populate('author', 'name');
     res.json(posts);
   } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// ========== CREATE POST ROUTE (ADDED THIS) ==========
+app.post('/api/posts', async (req, res) => {
+  try {
+    const { title, body } = req.body;
+    
+    // Get token from Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ message: 'No token provided' });
+    }
+    
+    const token = authHeader.split(' ')[1];
+    const jwt = require('jsonwebtoken');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret123');
+    
+    const post = new Post({
+      title,
+      body,
+      author: decoded.id,
+      status: 'published',
+      createdAt: new Date()
+    });
+    
+    await post.save();
+    res.status(201).json(post);
+  } catch (error) {
+    console.error('Create post error:', error);
     res.status(500).json({ message: error.message });
   }
 });
