@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 dotenv.config();
 
@@ -52,10 +54,12 @@ mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ MongoDB Connected'))
   .catch(err => console.error('❌ MongoDB Error:', err));
 
-// ========== REGISTER ROUTE (ADDED THIS) ==========
+// ========== REGISTER ROUTE (FIXED) ==========
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
+    
+    console.log('Register attempt:', { name, email });
     
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -63,9 +67,11 @@ app.post('/api/auth/register', async (req, res) => {
       return res.status(400).json({ message: 'Email already exists' });
     }
     
-    // Hash the password
-    const bcrypt = require('bcryptjs');
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Hash the password - using genSalt and hash for better compatibility
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    
+    console.log('Password hashed successfully');
     
     // Create new user
     const user = new User({
@@ -77,6 +83,7 @@ app.post('/api/auth/register', async (req, res) => {
     });
     
     await user.save();
+    console.log('User saved successfully:', user._id);
     
     res.status(201).json({ 
       message: 'User created successfully',
@@ -102,7 +109,6 @@ app.get('/api/auth/me', async (req, res) => {
     }
     
     const token = authHeader.split(' ')[1];
-    const jwt = require('jsonwebtoken');
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret123');
     const user = await User.findById(decoded.id).select('-password');
     
@@ -148,7 +154,6 @@ app.post('/api/posts', async (req, res) => {
     }
     
     const token = authHeader.split(' ')[1];
-    const jwt = require('jsonwebtoken');
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret123');
     
     const post = new Post({
@@ -167,20 +172,22 @@ app.post('/api/posts', async (req, res) => {
   }
 });
 
-// ========== LOGIN ROUTE ==========
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-
+// ========== LOGIN ROUTE (FIXED) ==========
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
     
+    console.log('Login attempt:', { email });
+    
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
     
     const isMatch = await bcrypt.compare(password, user.password);
+    
+    console.log('Password match:', isMatch);
+    
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
@@ -201,6 +208,7 @@ app.post('/api/auth/login', async (req, res) => {
       }
     });
   } catch (error) {
+    console.error('Login error:', error);
     res.status(500).json({ message: error.message });
   }
 });
