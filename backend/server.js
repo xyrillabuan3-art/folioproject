@@ -52,6 +52,47 @@ mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ MongoDB Connected'))
   .catch(err => console.error('❌ MongoDB Error:', err));
 
+// ========== REGISTER ROUTE (ADDED THIS) ==========
+app.post('/api/auth/register', async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Email already exists' });
+    }
+    
+    // Hash the password
+    const bcrypt = require('bcryptjs');
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
+    // Create new user
+    const user = new User({
+      name: name || email.split('@')[0],
+      email,
+      password: hashedPassword,
+      role: 'member',
+      status: 'active'
+    });
+    
+    await user.save();
+    
+    res.status(201).json({ 
+      message: 'User created successfully',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    console.error('Register error:', error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // ========== GET CURRENT USER ROUTE ==========
 app.get('/api/auth/me', async (req, res) => {
   try {
@@ -95,7 +136,7 @@ app.get('/api/admin/posts', async (req, res) => {
   }
 });
 
-// ========== CREATE POST ROUTE (ADDED THIS) ==========
+// ========== CREATE POST ROUTE ==========
 app.post('/api/posts', async (req, res) => {
   try {
     const { title, body } = req.body;
