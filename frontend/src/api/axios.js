@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://thefolio-backend.onrender.com/api';
+const API_URL = 'https://folioproject-backend.onrender.com/api';
 const instance = axios.create({
   baseURL: API_URL,
   headers: {
